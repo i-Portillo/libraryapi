@@ -1,0 +1,15 @@
+[ {
+  "title" : "Clean Code",
+  "author" : "Robert C. Martin",
+  "genres" : [ "HORROR" ],
+  "pageCount" : 322,
+  "summary" : "How to write clean code",
+  "collection" : null
+}, {
+  "title" : "Dune",
+  "author" : "Frank Herbert",
+  "genres" : [ "SCIFI", "FICTION", "THRILLER" ],
+  "pageCount" : 412,
+  "summary" : "A space epic.",
+  "collection" : null
+} ]
