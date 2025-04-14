@@ -1,31 +1,41 @@
 package com.example.libraryapi.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+
+@Entity
 public class Book {
 
 	public enum Genre {
-		FANTASY,
-		MYSTERY,
-		YOUNG_ADULT,
-		THRILLER,
-		HORROR,
-		ROMANCE,
-		FICTION,
-		SCIFI
+		FICTION, NON_FICTION, MYSTERY, FANTASY, SCIENCE_FICTION, BIOGRAPHY, HISTORY, ROMANCE
 	}
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(nullable = false)
 	private String title;
+
+	@Column(nullable = false)
 	private String author;
 
+	@ElementCollection(targetClass = Genre.class)
+	@Enumerated(EnumType.STRING)
+	@CollectionTable(name = "book_genres", joinColumns = @JoinColumn(name = "book_id"))
+	@Column(name = "genre")
 	@JsonDeserialize(contentUsing = GenreDeserializer.class)
-	private List<Genre> genres;
+	private List<Genre> genres = new ArrayList<>();
 	
 	private int pageCount;
 	private String summary;
+
+	@ManyToOne
 	private Collection collection;
 
 	public Book() {}
@@ -39,6 +49,9 @@ public class Book {
 		this.collection = collection;
 	}
 
+	public Long getId() { return id; }
+	public void setId(Long id) { this.id = id; }
+
 	public String getTitle() { return title; }
 	public void setTitle(String title) { this.title = title; }
 
@@ -48,9 +61,6 @@ public class Book {
 	public List<Genre> getGenres() { return genres; }
 	public void setGenres(List<Genre> genres) { this.genres = genres; }
 	public void addGenre(Genre genre) {
-		if (genres == null) {
-			genres = new ArrayList<>();
-		}
 		if (!genres.contains(genre)) {
 			genres.add(genre);
 		}

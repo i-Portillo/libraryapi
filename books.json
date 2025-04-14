@@ -1,15 +1,31 @@
 [ {
-  "title" : "Clean Code",
-  "author" : "Robert C. Martin",
-  "genres" : [ "HORROR" ],
-  "pageCount" : 322,
-  "summary" : "How to write clean code",
-  "collection" : null
+  "id" : null,
+  "title" : "The Haunted Shore",
+  "author" : "Lila Haarper",
+  "genres" : [ "FICTION" ],
+  "pageCount" : 298,
+  "summary" : "A chilling tale of a cursed coastal town.",
+  "collection" : {
+    "id" : null,
+    "name" : "TEST",
+    "entries" : [ {
+      "bookId" : null,
+      "position" : 0
+    } ]
+  }
 }, {
-  "title" : "Dune",
-  "author" : "Frank Herbert",
-  "genres" : [ "SCIFI", "FICTION", "THRILLER" ],
-  "pageCount" : 412,
-  "summary" : "A space epic.",
-  "collection" : null
+  "id" : null,
+  "title" : "The Haunteded Shore",
+  "author" : "Lila Harper",
+  "genres" : [ "FICTION" ],
+  "pageCount" : 298,
+  "summary" : "A chilling tale of a cursed coastal town.",
+  "collection" : {
+    "id" : null,
+    "name" : "TEST",
+    "entries" : [ {
+      "bookId" : null,
+      "position" : 0
+    } ]
+  }
 } ]

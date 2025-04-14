@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class BookRepository {
 	
 	private static final String FILE_PATH = "books.json";
@@ -52,6 +55,13 @@ public class BookRepository {
 		boolean removed = books.removeIf(b -> b.getTitle().equalsIgnoreCase(title));
 		if (removed) saveBooksToFile();
 		return removed;
+	}
+
+	public Book findByTitle(String title) {
+		return books.stream()
+			.filter(b -> b.getTitle().equalsIgnoreCase(title))
+			.findFirst()
+			.orElse(null);
 	}
 
 }
