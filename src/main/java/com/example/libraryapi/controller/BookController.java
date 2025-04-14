@@ -29,41 +29,21 @@ public class BookController {
 
 	@PostMapping
 	public ResponseEntity<String> addBook(@RequestBody Book book) {
-		if (book.getTitle() == null || book.getTitle().isEmpty()) {
-			return ResponseEntity.badRequest().body("Error: Title is required.");
-		}
-		if (book.getAuthor() == null || book.getAuthor().isEmpty()) {
-			return ResponseEntity.badRequest().body("Error: Author is required.");
-		}
-		if (book.getGenres() == null || book.getGenres().isEmpty()) {
-			return ResponseEntity.badRequest().body("Error: At least one genre is required.");
-		}
-		if (book.getPageCount() <= 0) {
-			return ResponseEntity.badRequest().body("Error: Page count must be greater than zero.");
-		}
-
 		if (book.getCollection() != null) {
-			createCollectionWithBook(book.getCollection().getName(), book);
+			Collection collection = collectionRepository.findByName(book.getCollection().getName());
+			if (collection == null) {
+				collection = book.getCollection();
+				collectionRepository.save(book.getCollection());
+			}
+			book.setCollection(collection);
 		}
-
-		try {
-			repository.addBook(book);
-			return ResponseEntity.ok("Book added!");
-		} catch (RuntimeException e) {
-			return ResponseEntity.badRequest().body("Error: " + e.getMessage());
-		}
+		repository.save(book);
+		return ResponseEntity.ok("Book added.");
 	}
 
 	@DeleteMapping("/{title}")
 	public String deleteBook(@PathVariable String title) {
-		boolean removed = repository.deleteBook(title);
-		return removed ? "Book deleted." : "Book not found.";
-	}
-
-	private void createCollectionWithBook(String collectionName, Book book) {
-		Collection collection = new Collection(collectionName);
-		collection.addBook(book, 0);
-		collectionRepository.addCollection(collection);
-		book.setCollection(collection);
+		repository.deleteByTitle(title);
+		return "Book deleted.";
 	}
 }
