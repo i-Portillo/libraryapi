@@ -10,6 +10,8 @@ import com.example.libraryapi.model.Collection;
 import com.example.libraryapi.repository.BookRepository;
 import com.example.libraryapi.repository.CollectionRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class BookService {
 	private final BookRepository bookRepository;
@@ -54,7 +56,28 @@ public class BookService {
 		}
 	}
 
+	@Transactional
 	public void deleteBook(String title) {
-		bookRepository.deleteByTitle(title);
+		// Find the book by title
+		Book book = bookRepository.findByTitle(title);
+		if (book == null) {
+			throw new IllegalArgumentException("Book not found with title: " + title);
+		}
+
+		// Remove the book's entry from the collection
+		Collection collection = book.getCollection();
+		if (collection != null) {
+			// Remove the entry referencing the book
+			collection.removeBook(book.getId());
+			collectionRepository.save(collection);
+
+			// If the collection has no remaining entries, delete it
+			if (collection.getEntries().isEmpty()) {
+				collectionRepository.delete(collection);
+			}
+		}
+
+		// Delete the book
+		bookRepository.delete(book);
 	}
 }
