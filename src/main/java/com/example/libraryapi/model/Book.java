@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-
 @Entity
 public class Book {
 
